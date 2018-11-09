@@ -1,2 +1,2 @@
 # Personal-Projects
-Rough short perosnal projects
+Rough short personal projects
