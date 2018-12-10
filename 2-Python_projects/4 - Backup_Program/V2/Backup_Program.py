@@ -6,9 +6,9 @@ import time
 import datetime
 
 #Locations of files to be backed-up
-backup_origin_1 = "\\\192.168.0.22\CamShare"
-backup_origin_2 = "\\\192.168.0.22\MediaShare"
-backup_origin_3 = "\\\192.168.0.22\SoftwareShare"
+backup_origin_1 = "\\\\192.168.0.22\CamShare"
+backup_origin_2 = "\\\\192.168.0.22\MediaShare"
+backup_origin_3 = "\\\\192.168.0.22\SoftwareShare"
 
 #Location to save back-up's
 backup_target_1 = "\\\BABBAGE\Backup\CamShare"
