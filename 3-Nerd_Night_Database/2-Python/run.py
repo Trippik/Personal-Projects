@@ -87,8 +87,16 @@ def query_item():
             console_name = input()
             query_function(game_title, console_name, 3)
     elif (query_option == 2):
-        print("insert console query code")
-    elif (query_option == 3):
+        print("Would you like to:")
+        print("1. See a list of consoles in inventory")
+        print("2. Search for a console by name")
+        user_response2 = int(input())
+        if (user_response2 == 1):
+            query_function("IGNORE", "IGNORE", 4)
+        elif (user_response2 == 2):
+            print("Please input console name")
+            console_name = input()
+            query_function("IGNORE", console_name, 5)
         print("insert controller query code")
     elif (query_option == 3):
         print("insert Peripheral Query Code")
@@ -116,3 +124,5 @@ def main_menu():
 
 startup()
 main_menu()
+    
+
