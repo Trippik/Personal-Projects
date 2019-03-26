@@ -1,4 +1,3 @@
-import mysql.connector
 from Base_Classes import *
 
 def startup():
