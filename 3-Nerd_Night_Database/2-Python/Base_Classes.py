@@ -34,6 +34,7 @@ class Game:
         
     def add_game(self):
         self.existing_entry_check()
+#        if (self.existing_entry_check() == 1):
         if (self.state == 1):
             nerd_night_db = mysql.connector.connect(
                 host=host_var,
@@ -49,6 +50,7 @@ class Game:
             print("Database record updated")
             cursor.close()
             nerd_night_db.close()
+#        elif (self.existing_entry_check() == 0):
         elif (self.state == 0):
             nerd_night_db = mysql.connector.connect(
                 host=host_var,
@@ -98,7 +100,7 @@ class query:
         cursor = nerd_night_db.cursor()
         query1 = ("SELECT game.game_name, console.console_name FROM game INNER JOIN console ON game.compatible_console = console.id WHERE game.game_name LIKE '%" + self.name + "%' ORDER BY game.game_name")
         query2 = ("SELECT game.game_name, console.console_name FROM game INNER JOIN console ON game.compatible_console = console.id WHERE console.console_name LIKE '%" + self.console + "%' ORDER BY game.game_name") 
-        query3 = ("SELECT game.game_name, console.console_name FROM game INNER JOIN console ON game.compatible_console = console.id WHERE console.console_name LIKE '%" + self.console + "%' AND WHERE game.game_name LIKE '%" + self.name + "%' ORDER BY game.game_name")   
+        query3 = ("SELECT game.game_name, console.console_name FROM game INNER JOIN console ON game.compatible_console = console.id WHERE console.console_name LIKE '%" + self.console + "%' AND game.game_name LIKE '%" + self.name + "%' ORDER BY game.game_name")   
         if (self.code == 1):
             cursor.execute(query1)
             response = cursor.fetchall()
@@ -112,6 +114,17 @@ class query:
             nerd_night_db.close()
         elif (self.code == 2):
             cursor.execute(query2)
+            response = cursor.fetchall()
+            for row in response:
+                print("Name:  " + row[0] + "\nConsole:  " + row[1] + "\n____________________________________________________________________")
+            print()
+            print("Search complete!!")
+            print()
+            print()
+            cursor.close()
+            nerd_night_db.close()
+        elif (self.code == 3):
+            cursor.execute(query3)
             response = cursor.fetchall()
             for row in response:
                 print("Name:  " + row[0] + "\nConsole:  " + row[1] + "\n____________________________________________________________________")
@@ -141,4 +154,4 @@ class query:
             print()
             print()
             cursor.close()
-            nerd_night_db.close()            
+            nerd_night_db.close()
