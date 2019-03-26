@@ -2,8 +2,7 @@ import mysql.connector
 host_var = "INSERT_HOST_ADDRESS_HERE"
 user_var = "INSERT_USERNAME_HERE"
 passwd_var = "INSERT_PASSWORD_HERE"
-database_var = "nerd_night"
-            
+database_var = "nerd_night"           
     
 
 class Game:
@@ -35,7 +34,6 @@ class Game:
         
     def add_game(self):
         self.existing_entry_check()
-#        if (self.existing_entry_check() == 1):
         if (self.state == 1):
             nerd_night_db = mysql.connector.connect(
                 host=host_var,
@@ -51,7 +49,6 @@ class Game:
             print("Database record updated")
             cursor.close()
             nerd_night_db.close()
-#        elif (self.existing_entry_check() == 0):
         elif (self.state == 0):
             nerd_night_db = mysql.connector.connect(
                 host=host_var,
@@ -106,7 +103,7 @@ class query:
             cursor.execute(query1)
             response = cursor.fetchall()
             for row in response:
-                print("Name:  " + row[0] + "|| Console:  " + row[1])
+                print("Name:  " + row[0] + "\nConsole:  " + row[1] + "\n____________________________________________________________________")
             print()
             print("Search complete!!")
             print()
@@ -117,7 +114,7 @@ class query:
             cursor.execute(query2)
             response = cursor.fetchall()
             for row in response:
-                print("Name:  " + row[0] + "|| Console:  " + row[1])
+                print("Name:  " + row[0] + "\nConsole:  " + row[1] + "\n____________________________________________________________________")
             print()
             print("Search complete!!")
             print()
@@ -138,11 +135,10 @@ class query:
             cursor.execute(query4)
             response = cursor.fetchall()
             for row in response:
-                print("Name:  " + row[0] + "|| Number in Inventory:  " + str(row[1]))
+                print("Name:  " + row[0] + "\nNumber in Inventory:  " + str(row[1]) + "\n____________________________________________________________________")
             print()
             print("Search complete!!")
             print()
             print()
             cursor.close()
-            nerd_night_db.close()
-            
+            nerd_night_db.close()            
