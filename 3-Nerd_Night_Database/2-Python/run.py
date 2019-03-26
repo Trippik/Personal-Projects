@@ -107,8 +107,8 @@ def option(user_option):
     elif (user_option == 2):
         add_item()
     elif (user_option == 3):
-        startup()
-        main_menu()
+        exit
+        
 
 def main_menu():
     print()
