@@ -8,7 +8,7 @@ def startup():
 
 def new_section():
 #Function that writes appropriate messages and spacing for mew menus and other new function/messages
-    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
     print("*************************************************")
 
 def add_game():
@@ -21,13 +21,18 @@ def add_game():
     #Create object based on the game class imported from the Base_Classes file
     game.add_game()
     #Run the add game routine for the newly created object
+    print("Game added to the database")
+    print("Thank you for your donation - you're officialy awesome!")
+    print()
+    print()
+    main_menu()
 
-def query_function(game_title, console, item_code):
+def query_function(title, console, item_code):
 #Function for creating necessary object within correct class when querying the nerd night database
     print("Starting search")
     print("--------------------------------------------------------------")
     print("--------------------------------------------------------------")
-    search = query(game_title, console, item_code)
+    search = query(title, console, item_code)
     #Create an object called search based on the query class imported from the Base_Classes file
     print("Would you like to:")
     print("1. Search for another item")
@@ -40,8 +45,7 @@ def query_function(game_title, console, item_code):
         new_section()
         main_menu()
     #Once the appropriate routines from the search/query object is complete return to the above sub menu
-        
-        
+
     
 def add_item():
 #Function for adding new items to the nerd night database
@@ -109,10 +113,23 @@ def query_item():
             print("Please input console name")
             console_name = input()
             query_function("IGNORE", console_name, 5)
-        print("insert controller query code")
     #If user is searching for a controller run code below    
     elif (query_option == 3):
-        print("insert Peripheral Query Code")
+        print("Would you like to:")
+        print("1. Search for controllers by console")
+        print("2. Show a list of all controllers in database")
+        user_response3 = int(input())
+        if (user_response3 == 1):
+            print("Please input console name")
+            console_name = input()
+            query_function("IGNORE", console_name, 6)
+        elif (user_response3 == 2):
+            query_function("IGNORE", "IGNORE", 7)
+    #If user is searching for a controller run code below
+    elif (query_option == 4):
+        print("Searching for all non-controller peripherals")
+        query_function("IGNORE", "IGNORE", 9)
+                
 
 def option(user_option):
 #Function for processing user responses from main menu
