@@ -6,6 +6,123 @@ user_var = "INSERT USERNAME HERE "
 passwd_var = "INSERT PASSWORD HERE"
 database_var = "nerd_night"
     
+#Create class Controller
+class Controller:
+    def __init__(self, name, console, quantity):
+        self.name = name
+        self.console = console
+        self.quantity = quantity
+
+    def create_new_controller_entry(self):
+        nerd_night_db = mysql.connector.connect(
+            host=host_var,
+            user=user_var,
+            passwd=passwd_var,
+            database=database_var)
+        cursor = nerd_night_db.cursor()
+
+    def update_existing_controller_entry(self):
+        nerd_night_db = mysql.connector.connect(
+            host=host_var,
+            user=user_var,
+            passwd=passwd_var,
+            database=database_var)
+        cursor = nerd_night_db.cursor()
+        query1 = ("SELECT peripheral.id FROM peripheral INNER JOIN console ON peripheral.compatible_console = console.id WHERE peripheral.object = 3 and console.console_name = '" + self.console + "'")
+        cursor.execute(query1)
+        response = cursor.fetchall()
+        for row in response:
+            controller_id = row[0]
+        controller_id = str(controller_id)
+        query2 = ("UPDATE peripheral SET peripheral.quantity_total = peripheral.quantity_total + 1 WHERE peripheral.id = " + controller_id)
+        cursor.execute(query2)
+        nerd_night_db.commit()
+        cursor.close()
+        nerd_night_db.close()
+
+    def add_controller(self):
+        nerd_night_db = mysql.connector.connect(
+            host=host_var,
+            user=user_var,
+            passwd=passwd_var,
+            database=database_var)
+        cursor = nerd_night_db.cursor()
+        query1 = ("SELECT COUNT(*) FROM peripheral INNER JOIN console ON peripheral.compatible_console = console.id WHERE peripheral.object = 3 AND console.console_name = '" + self.console + "'")
+        cursor.execute(query1)
+        result = cursor.fetchall()
+        for row in result:
+            entry_check = row[0]
+        if (entry_check > 0):
+            self.update_existing_controller_entry()
+        elif (entry_check == 0):
+            self.create_new_controller_entry()
+        
+        
+
+#Create class Console
+class Console:
+    def __init__(self, name):
+        self.name = name
+
+    #Sub function for creating new console records
+    def create_new_console_entry(self):
+        nerd_night_db = mysql.connector.connect(
+            host=host_var,
+            user=user_var,
+            passwd=passwd_var,
+            database=database_var)
+        cursor = nerd_night_db.cursor()
+        query1 = ("SELECT COUNT(*) FROM console")
+        cursor.execute(query1)
+        result = cursor.fetchall()
+        for row in result:
+            max_id = row[0]
+        new_id = max_id + 1
+        new_id = str(new_id)
+        query2 = ("INSERT INTO console (id, console_name, quantity_total) VALUES (" + new_id + ", '" + self.name + "', 1)")
+        cursor.execute(query2)
+        nerd_night_db.commit()
+        cursor.close()
+        nerd_night_db.close()
+
+    #Sub-function for updating existing console records
+    def update_existing_console_entry(self):
+        nerd_night_db = mysql.connector.connect(
+            host=host_var,
+            user=user_var,
+            passwd=passwd_var,
+            database=database_var)
+        cursor = nerd_night_db.cursor()
+        query1 = ("SELECT console.id FROM console WHERE console.console_name = '" + self.name + "'")
+        cursor.execute(query1)
+        result = cursor.fetchall()
+        for row in result:
+            console_id = row[0]
+        console_id = str(console_id)
+        query2 = ("UPDATE console SET console.quantity_total = console.quantity_total + 1 WHERE console.id = " + console_id)
+        cursor.execute(query2)
+        nerd_night_db.commit()
+        cursor.close()
+        nerd_night_db.close()
+
+    #Primary function for adding a console to the database
+    def add_console(self):
+        nerd_night_db = mysql.connector.connect(
+            host=host_var,
+            user=user_var,
+            passwd=passwd_var,
+            database=database_var)
+        cursor = nerd_night_db.cursor()
+        query1 = ("SELECT COUNT(*) FROM console WHERE console.console_name = '" + self.name + "'")
+        cursor.execute(query1)
+        result = cursor.fetchall()
+        for row in result:
+            entry_check = row[0]
+        if (entry_check > 0):
+            self.update_existing_console_entry()
+        elif (entry_check == 0):
+            self.create_new_console_entry()
+
 #Create class game
 class Game:
     #Give each game a title and compatible console name and set it's defualt state to 3
@@ -14,6 +131,7 @@ class Game:
         self.console = console
         self.state = 3
 
+    #Sub-function for adding a new game to the database where an entry for that game on that console already exists
     def update_existing_game_record(self):
         nerd_night_db = mysql.connector.connect(
             host=host_var,
@@ -27,11 +145,12 @@ class Game:
         for row in result:
             selected_id = row[0]
         selected_id = str(selected_id)
-        query2 = ("UPDATE game SET game.quantity_total = game.quantity_total + 1 WHERE game.id = '" + selected_id + "'")
+        query2 = ("UPDATE game SET game.quantity_total = game.quantity_total + 1 WHERE game.id = " + selected_id)
         cursor.execute(query2)
         nerd_night_db.commit()
         nerd_night_db.close()
 
+    #Sub-function for adding a new game to the datbase where no entry for that game exists but an entry for that console exists
     def create_new_game_entry_existing_console(self, new_id):
         nerd_night_db = mysql.connector.connect(
             host=host_var,
@@ -44,12 +163,40 @@ class Game:
         result = cursor.fetchall()
         for row in result:
             existing_console_id = row[0]
-        query
+        existing_console_id = str(existing_console_id)
+        print(existing_console_id)
+        query2 = ("INSERT INTO game (id, game_name, compatible_console, quantity_total) VALUES (" + new_id + ", '" + self.title + "', " + existing_console_id + ", 1)")
+        cursor.execute(query2)
+        nerd_night_db.commit()
+        cursor.close()
+        nerd_night_db.close()
         
 
-    def create_new_game_entry_new_console(self):
-        print("Yay")
+    #Sub-fnction for adding a new game to the database where no entry for that game or console exists
+    def create_new_game_entry_new_console(self, new_id):
+        nerd_night_db = mysql.connector.connect(
+            host=host_var,
+            user=user_var,
+            passwd=passwd_var,
+            database=database_var)
+        cursor = nerd_night_db.cursor()
+        query1 = ("SELECT COUNT(*) FROM console")
+        cursor.execute(query1)
+        result = cursor.fetchall()
+        for row in result:
+            max_console_id = row[0]
+        print(max_console_id)
+        new_console_id = max_console_id + 1
+        new_console_id = str(new_console_id)
+        query2 = ("INSERT INTO console (id, console_name) VALUES (" + new_console_id + ", '" + self.console + "')")
+        cursor.execute(query2)
+        nerd_night_db.commit()
+        cursor.close()
+        nerd_night_db.close()
+        self.create_new_game_entry_existing_console(new_id)
+        
 
+    #Sub-function for adding a new game with no existing record
     def create_new_game_entry(self):
         nerd_night_db = mysql.connector.connect(
             host=host_var,
@@ -69,12 +216,13 @@ class Game:
             current_highest_id = row[0]
         new_id = current_highest_id + 1
         print(new_id)
+        new_id = str(new_id)
         if (entry_check > 0):
             self.create_new_game_entry_existing_console(new_id)
         elif (entry_check == 0):
             self.create_new_game_entry_new_console(new_id)
 
-    #Function to check for exisiting records of a game
+    #Primary function to add a new game to database
     def add_game(self):
         #Connect to server and open session
         nerd_night_db = mysql.connector.connect(
@@ -125,15 +273,15 @@ class query:
             passwd=passwd_var,
             database=database_var)
         cursor = nerd_night_db.cursor()
-        query1 = ("SELECT game.game_name, console.console_name FROM game INNER JOIN console ON game.compatible_console = console.id WHERE game.game_name LIKE '%" + self.name + "%' ORDER BY game.game_name")
-        query2 = ("SELECT game.game_name, console.console_name FROM game INNER JOIN console ON game.compatible_console = console.id WHERE console.console_name LIKE '%" + self.console + "%' ORDER BY game.game_name") 
-        query3 = ("SELECT game.game_name, console.console_name FROM game INNER JOIN console ON game.compatible_console = console.id WHERE console.console_name LIKE '%" + self.console + "%' AND game.game_name LIKE '%" + self.name + "%' ORDER BY game.game_name")   
+        query1 = ("SELECT game.game_name, console.console_name, game.quantity_total FROM game INNER JOIN console ON game.compatible_console = console.id WHERE game.game_name LIKE '%" + self.name + "%' ORDER BY game.game_name")
+        query2 = ("SELECT game.game_name, console.console_name, game.quantity_total FROM game INNER JOIN console ON game.compatible_console = console.id WHERE console.console_name LIKE '%" + self.console + "%' ORDER BY game.game_name") 
+        query3 = ("SELECT game.game_name, console.console_name, game.quantity_total FROM game INNER JOIN console ON game.compatible_console = console.id WHERE console.console_name LIKE '%" + self.console + "%' AND game.game_name LIKE '%" + self.name + "%' ORDER BY game.game_name")   
         #Search for game by title
         if (self.code == 1):
             cursor.execute(query1)
             response = cursor.fetchall()
             for row in response:
-                print("Name:  " + row[0] + "\nConsole:  " + row[1] + "\n____________________________________________________________________")
+                print("Name:  " + row[0] + "\nConsole:  " + row[1] + "\nNumber in Inventory:  " + str(row[2]) + "\n____________________________________________________________________")
             print()
             print("Search complete!!")
             print()
@@ -145,7 +293,7 @@ class query:
             cursor.execute(query2)
             response = cursor.fetchall()
             for row in response:
-                print("Name:  " + row[0] + "\nConsole:  " + row[1] + "\n____________________________________________________________________")
+                print("Name:  " + row[0] + "\nConsole:  " + row[1] + "\nNumber in Inventory:  " + str(row[2]) + "\n____________________________________________________________________")
             print()
             print("Search complete!!")
             print()
@@ -157,7 +305,7 @@ class query:
             cursor.execute(query3)
             response = cursor.fetchall()
             for row in response:
-                print("Name:  " + row[0] + "\nConsole:  " + row[1] + "\n____________________________________________________________________")
+                print("Name:  " + row[0] + "\nConsole:  " + row[1] + "\nNumber in Inventory:  " + str(row[2]) + "\n____________________________________________________________________")
             print()
             print("Search complete!!")
             print()
