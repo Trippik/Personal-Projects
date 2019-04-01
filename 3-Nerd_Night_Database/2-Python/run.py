@@ -6,10 +6,24 @@ def startup():
     print("Welcome to the Nerd Night Database")
     
 
+def dontation_message():
+    print("Game added to the database")
+    print("Thank you for your donation - you're officialy awesome!")
+
 def new_section():
 #Function that writes appropriate messages and spacing for mew menus and other new function/messages
     print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
     print("*************************************************")
+
+def add_controller():
+    print("Please enter controller name")
+    name = input()
+    print("Please enter compatible console for controller")
+    console = input()
+    print("Please input number of controllers you wish to enter into inventory")
+    quantity = input()
+    new_controller = Controller(name, console, quantity)
+    new_controller.add_controller()
 
 def add_game():
 #Function for adding new games to the nerd night database
@@ -21,8 +35,17 @@ def add_game():
     #Create object based on the game class imported from the Base_Classes file
     game.add_game()
     #Run the add game routine for the newly created object
-    print("Game added to the database")
-    print("Thank you for your donation - you're officialy awesome!")
+    donation_message()
+    print()
+    print()
+    main_menu()
+
+def add_console():
+    print("Please enter console name")
+    console_name = input()
+    new_console = Console(console_name)
+    new_console.add_console()
+    donation_message()
     print()
     print()
     main_menu()
@@ -45,7 +68,6 @@ def query_function(title, console, item_code):
         new_section()
         main_menu()
     #Once the appropriate routines from the search/query object is complete return to the above sub menu
-
     
 def add_item():
 #Function for adding new items to the nerd night database
@@ -60,9 +82,9 @@ def add_item():
     if (add_option == 1):
         add_game()
     elif (add_option == 2):
-        print("yay")
+        add_console()
     elif (add_option == 3):
-        print("yay")
+        add_controller()
     elif (add_option == 4):
         print("yay")
     else:
