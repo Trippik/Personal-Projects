@@ -33,8 +33,12 @@ void loop() {
     analogWrite(led, 0);
     delay(flash);
     analogWrite(led, 255);
-    delay(flash);
+    delay(flash)
     analogWrite(led, 0);
+    delay(flash);
+    analogWrite(led, 255);
     delay(wait);
+    analogWrite(led, 0);
+    delay(flash)
   }
 }
