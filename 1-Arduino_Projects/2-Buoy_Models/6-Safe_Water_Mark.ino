@@ -1,20 +1,16 @@
 //Pin Assignment
-int led = 3;
-int button = 2;
+int led = 13;
 int flash = 3000;
 int wait = 10000;
 
 void setup() {
   //Pin initialisation
   pinMode(led, OUTPUT);
-  pinMode(button, INPUT);
 }
 
 void loop() {
-  if(button == 1){
     analogWrite(led, 255);
     delay(flash);
     analogWrite(led, 0);
     delay(wait);
-  }
 }
